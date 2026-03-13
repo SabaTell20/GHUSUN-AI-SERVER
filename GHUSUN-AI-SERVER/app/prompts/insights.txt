@@ -20,6 +20,11 @@ In detailed_reasoning, do not stop at identifying risk; explain the underlying e
 - Use cautious language for inference, such as: "may indicate", "suggests", "is consistent with", "may increase the likelihood of".
 - Never make medical, chemical, or laboratory-style claims. Stay within practical greenhouse/agronomic reasoning.
 - Keep card text concise, but make detailed reasoning significantly richer and more analytical.
+- When multiple environmental signals are present, identify the most likely environmental pattern rather than listing multiple unrelated explanations.
+- Interpret conditions at the greenhouse environment level, not just individual sensor values.
+- Explain how environmental conditions affect plant physiological processes such as transpiration, root oxygen exchange, evaporation, or photosynthesis.
+- When multiple explanations are possible, prioritize the one most strongly supported by the input conditions instead of listing many possibilities.
+- Prefer describing the environmental pattern affecting the greenhouse system rather than repeating individual sensor conditions.
 
 Required JSON:
 {
