@@ -73,8 +73,7 @@ High humidity → avoid mist
 Low light daytime → possible LIGHT_CONTROL
 Low light night → usually NO_ACTION
 Prefer ventilation over mist if humidity is already high
-Do not irrigate if soil moisture is acceptable even if temperature is high
-Severity & Prioritization:
+Do not irrigate if soil moisture is acceptable UNLESS environmental conditions (low humidity, high temperature, strong light, or rising weather trends) indicate imminent water stress.Severity & Prioritization:
 Select ONLY ONE action.
 Choose the most critical issue based on:
 deviation from thresholds
