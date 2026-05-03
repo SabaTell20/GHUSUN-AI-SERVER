@@ -8,14 +8,21 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def call_llm(system_prompt: str, user_input: str):
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        response_format={"type": "json_object"},
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_input}
-        ],
-        temperature=0
-    )
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4.1-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_input}
+            ],
+            temperature=0
+        )
 
-    return response.choices[0].message.content
+        content = response.choices[0].message.content
+        print("LLM OUTPUT:", content)
+
+        return content
+
+    except Exception as e:
+        print("OPENAI ERROR:", str(e))
+        raise
