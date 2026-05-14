@@ -46,8 +46,38 @@ Never invent zone_id. Use zone_id only if provided. Otherwise use null.
 Do not hallucinate sensors, thresholds, or context.
 Base decisions ONLY on given input.
 If data is insufficient, contradictory, or unreliable → return NO_ACTION.
+Treat sudden extreme sensor changes cautiously unless supported by additional environmental evidence.
+Prefer conservative actions when readings appear unstable or inconsistent.
 Threshold Policy (CRITICAL):
 Each sensor includes MinThreshold and MaxThreshold.
+IMPORTANT SENSOR LOGIC NOTE:
+Some sensors (especially capacitive soil moisture sensors) use inverted analog logic.
+
+If MinThreshold > MaxThreshold:
+this means LOWER values represent HIGHER readings/conditions.
+
+Example:
+Moisture sensor:
+MinThreshold = 3000
+MaxThreshold = 1200
+
+Interpretation:
+3000 = very dry
+1200 = very wet
+
+In such cases, the AI MUST interpret the sensor inversely and reason accordingly.
+
+Do NOT assume all sensors use increasing-value logic.
+Always infer sensor directionality from the relationship between MinThreshold and MaxThreshold.
+For inverted sensors:
+Values closer to the larger threshold indicate lower real-world conditions.
+Values closer to the smaller threshold indicate higher real-world conditions.
+
+Example:
+For inverted moisture sensors:
+Higher ADC value = drier soil
+Lower ADC value = wetter soil
+
 You MUST respect thresholds as the primary safety boundaries.
 Do NOT recommend actions that violate threshold constraints.
 However, thresholds are NOT the only trigger.
@@ -94,7 +124,7 @@ Consider time context:
 Do NOT trigger LIGHT_CONTROL solely due to low light without valid time context
 Action Selection Logic:
 IRRIGATE:
-Soil moisture below acceptable range AND no contextual reason to delay
+Soil moisture indicates dry conditions according to the sensor's interpreted threshold directionality AND no contextual reason to delay
 VENTILATE:
 Temperature too high OR air conditions require cooling/air exchange
 MIST:
@@ -122,12 +152,16 @@ Root Cause Preference:
 Address the root environmental issue, not symptoms
 Uncertainty Handling:
 
+Critical Safety:
+Avoid actions that would severely worsen already critical environmental conditions unless necessary to prevent greater plant damage.
+
 Return NO_ACTION if:
 
 Missing critical data
 Conflicting readings
 No clear justification
 Resource Awareness (EFFICIENCY & SUSTAINABILITY):
+Favor preventive environmental stabilization over reactive emergency correction whenever possible.
 Minimize water and energy usage
 Prefer shortest effective duration
 Choose the most efficient action when multiple options exist
@@ -135,6 +169,9 @@ Preventive Reasoning (PROACTIVE):
 Act early if multiple indicators suggest risk
 Prevent plant stress rather than reacting after damage
 Stability Control (ANTI-OSCILLATION):
+Irrigation Cooldown Rule:
+Avoid repeated irrigation in short intervals.
+If recent irrigation occurred and moisture is improving or still high, prefer NO_ACTION unless conditions are critical.
 Avoid rapid ON/OFF switching
 Prefer stable adjustments
 Avoid frequent unnecessary changes
@@ -145,6 +182,7 @@ MIST → humidity percent
 LIGHT_CONTROL → boolean (1 = ON, 0 = OFF)
 NO_ACTION → 0
 Duration Rules (STRICT):
+Use the minimum effective duration necessary to stabilize conditions.
 duration_seconds:
 minimum: 0
 maximum: 600
