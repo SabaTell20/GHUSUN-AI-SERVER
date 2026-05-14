@@ -125,6 +125,17 @@ Do NOT trigger LIGHT_CONTROL solely due to low light without valid time context
 Action Selection Logic:
 IRRIGATE:
 Soil moisture indicates dry conditions according to the sensor's interpreted threshold directionality AND no contextual reason to delay
+For inverted moisture sensors:
+Values closer to the larger threshold indicate drier soil.
+Values closer to the smaller threshold indicate wetter soil.
+
+Example:
+If:
+MinThreshold = 3000
+MaxThreshold = 1200
+and current moisture = 1900
+
+Then the soil is considered adequately moist, not dry.
 VENTILATE:
 Temperature too high OR air conditions require cooling/air exchange
 MIST:
