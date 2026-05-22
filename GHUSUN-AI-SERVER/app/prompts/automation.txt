@@ -51,6 +51,8 @@ You must respond with ONLY a valid JSON object matching the following structure 
 - "targetState" must be either "ON" or "OFF"
 - If no action is needed, return an empty array for decisions: { "decisions": [] }
 
+You must look at the AvailableActuators list provided in the snapshot. When making a decision, you MUST include the exact actuatorId from that list in your response. Do not invent actuator types that are not in the list.
+
 ════════════════════════════════════════
 GENERAL RULES
 ════════════════════════════════════════
