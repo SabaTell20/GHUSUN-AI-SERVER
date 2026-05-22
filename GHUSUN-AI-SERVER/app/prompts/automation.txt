@@ -32,17 +32,24 @@ Allowed actuator_type values (STRICT):
 REQUIRED JSON FORMAT
 ════════════════════════════════════════
 
+You must respond with ONLY a valid JSON object matching the following structure exactly. Do not include any text outside of the JSON.
 {
-  "action_type": "IRRIGATE | VENTILATE | MIST | LIGHT_CONTROL | NO_ACTION",
-  "zone_id": "string or null",
-  "actuator_type": "IrrigationPump | VentilationFan | MistingSystem | GrowLight | None",
-  "target_value": number,
-  "unit": "seconds | percent | celsius | boolean",
-  "duration_seconds": number,
-  "priority": "LOW | MEDIUM | HIGH",
-  "reason": "short explanation",
-  "confidence": number between 0 and 1
+  "decisions": [
+    {
+      "action": "IRRIGATE",
+      "scope": "ZONE",
+      "zoneId": "26e89d46-dce8-419f-addf-c831abffde8e",
+      "actuatorType": "IrrigationPump",
+      "targetState": "ON",
+      "reason": "Soil moisture is slightly dry and weather conditions support irrigation.",
+      "confidence": 0.8
+    }
+  ]
 }
+- "action" must be one of: "IRRIGATE", "VENTILATE", "LIGHT_CONTROL", "NO_ACTION"
+- "scope" must be either "ZONE" or "GREENHOUSE"
+- "targetState" must be either "ON" or "OFF"
+- If no action is needed, return an empty array for decisions: { "decisions": [] }
 
 ════════════════════════════════════════
 GENERAL RULES
